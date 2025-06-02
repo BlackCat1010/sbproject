@@ -1,0 +1,16 @@
+body {
+    height: 150vh;
+    background-image: url('/img/background_img.jpg');
+    background-attachment: fixed; 
+}
+
+.para {
+    font-family: 'Times New Roman', Times, serif;
+    font-size: xx-small;
+    fill-opacity: 0.5;
+    color: purple;
+}
+
+.all {
+    text-align: center;
+}
