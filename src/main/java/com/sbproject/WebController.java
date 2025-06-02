@@ -7,6 +7,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.text.DateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -24,6 +29,20 @@ public class WebController {
     public String loginPage(Model model) {
         model.addAttribute("user", new User());
         return "login";
+    }
+
+    @GetMapping("/contact")
+    public String contactPage() {
+        // aasasda
+        return "redirect:/login";
+    }
+
+    @GetMapping("/about")
+    public String aboutPage(Model model) {
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        DateTimeFormatter formatDateTime = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+        model.addAttribute("currDateTime",currentDateTime.format(formatDateTime));
+        return "about";
     }
 
     @PostMapping("/login")

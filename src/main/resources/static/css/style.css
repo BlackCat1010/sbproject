@@ -13,4 +13,25 @@ body {
 
 .all {
     text-align: center;
+
+    table,td,th {
+        border:1px solid black;
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 80%;
+        white-space:nowrap;
+
+    }
 }
+
+.bottom-left {
+    text-align:left;
+    position:fixed;
+    bottom:0;
+    left:1%;
+    color:white;
+    a {
+        color:white;
+    }
+}
+
