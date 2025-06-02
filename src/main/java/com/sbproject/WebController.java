@@ -4,11 +4,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import java.text.DateFormat;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -26,14 +26,22 @@ public class WebController {
     }
 
     @GetMapping("/login")
-    public String loginPage(Model model) {
+    public String loginPage(@RequestParam(name="error", required=false) String error,Model model) {
+        if(error!=null){
+            model.addAttribute("errorMsg", "Invalid Credentials");
+        }
         model.addAttribute("user", new User());
         return "login";
+    }
+    @GetMapping("/logout")
+    public String logoutPage(HttpSession session){
+        session.invalidate(); 
+        return "redirect:/login";
     }
 
     @GetMapping("/contact")
     public String contactPage() {
-        // aasasda
+        // aassas
         return "redirect:/login";
     }
 
@@ -50,11 +58,12 @@ public class WebController {
         // Should add setup conn to DB and check table. Should have DB data class, DB Service class to get.
         // Hardcode below as chatgpt says lmao.
         if ("admin".equals(user.getuserName()) && "1234".equals(user.getpassWord())) {
-            session.setAttribute("username", user.getuserName());
+            session.setAttribute("userName", user.getuserName());
             System.out.println("User: " + user.getuserName());
             System.out.println("Pass: " + user.getpassWord());
             System.out.println("Login Success!");
-            return "redirect:/dashboard";
+            String urlString = "redirect:/dashboard/"+ user.getuserName();
+            return urlString;
         } else {
             System.out.println("User: " + user.getuserName());
             System.out.println("Pass: " + user.getpassWord());
@@ -63,15 +72,16 @@ public class WebController {
         }
     }
 
-    @GetMapping("/dashboard")
-    public String dashboard(HttpSession session, Model model) {
-        String username = (String) session.getAttribute("username");
-        if (username != null) {
-            model.addAttribute("username", username);
-            return "dashboard";
-        } else {
-            return "redirect:/login";
+    @GetMapping("/dashboard/{userName}")
+    public String dashboard(@PathVariable(required=false) String userName,HttpSession session, Model model) {
+        String loggedInUser = (String) session.getAttribute("userName");
+        System.out.println("loggedInUser: "+loggedInUser);
+        if (loggedInUser==null || !loggedInUser.equals(userName)){
+            session.invalidate();
+            return "redirect:/login?error=Invalid";
         }
-    }
 
+        model.addAttribute("userName", userName);
+        return "dashboard";
+        }
 }

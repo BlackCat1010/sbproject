@@ -12,8 +12,8 @@
         Password: <input type="password" th:field="*{passWord}"/><br />
         <input type="submit" value="Login" />
     </form>
-    <p>
-        <span th:if="${param.error}">Invalid Credentials</span>
-    </p>
+    <div th:if="${errorMsg!=null}">
+        <p th:text="${errorMsg}" style="color:red"></p>
+    </div>
 </body>
 </html>

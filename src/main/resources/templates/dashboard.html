@@ -6,7 +6,34 @@
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
-    <h1>Welcome, <span th:text="${username}"></span></h1>
-    <a href="/">Back to Home</a>
+    <h1>Welcome, <span th:text="${userName}"></span></h1>
+
+    <nav>
+        <li><a th:href="@{/}">Home</a></li>
+        <li><a th:href="@{/about}">About</a></li>
+        <li><a th:href="@{/logout}">Log Out</a></li>
+    </nav>
+
+    
+    <table class="styled-table">
+    <thead>
+        <tr>
+            <th>Product</th>
+            <th>Price ($USD)</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Doll</td>
+            <td>6000</td>
+        </tr>
+        <tr class="active-row">
+            <td>Poker Cards</td>
+            <td>5150</td>
+        </tr>
+            <!-- and so on... -->
+    </tbody>
+    </table>
 </body>
+
 </html>
