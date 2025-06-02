@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>About</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body class="all">
+    <div id="clock" th:text="${currDateTime}">Loading...</div>
+    <script>
+        function updateClock() {
+            const now = new Date();
+            const clock = document.getElementById("clock");
+            const formattedTime = now.toLocaleString();
+            clock.textContent = formattedTime;
+        }
+
+        setInterval(updateClock, 1000);
+        updateClock();
+    </script>
+    <h1>Change Log</h1>
+    <table>
+        <th>Date</th>
+        <th>Contents</th>
+        <tr>
+            <td>2 June 2025</td>
+            <td>About, Clock,Contact added (Currently redirecting to login) </td>
+        </tr>
+        <tr>
+            <td>3 June 2025</td>
+            <td>Store Page will be added</td>
+        </tr>
+
+    </table>
+    
+    <div class="bottom-left">
+        <a href="/">Home</a>
+        <br>
+        <a href="/login">Login</a>
+    </div>
+</body>
+</html>
