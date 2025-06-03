@@ -15,5 +15,6 @@
     <div th:if="${errorMsg!=null}">
         <p th:text="${errorMsg}" style="color:red"></p>
     </div>
+    <p th:if="${param.unauthorized}" style="color: red;">Access denied. Please log in.</p>
 </body>
 </html>

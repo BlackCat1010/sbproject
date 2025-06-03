@@ -1,5 +1,6 @@
 package com.sbproject;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,9 +20,11 @@ public class WebController {
     // Controller indicates it can be web controller for receiving web traffic
 
     @RequestMapping("/")
-    public String home() {
-        System.out.println("indexPage");
-        System.out.println();
+    public String home(HttpSession session,Model model) {
+        if (session.getAttribute("userName")!=null){
+            System.out.println(session.getAttribute("userName")+" just entered index in.");
+            model.addAttribute("userName", session.getAttribute("userName"));
+        } // asd
         return "index";
     }
 
@@ -35,8 +38,10 @@ public class WebController {
     }
     @GetMapping("/logout")
     public String logoutPage(HttpSession session){
+        String userName = (String) session.getAttribute("userName");
         session.invalidate(); 
-        return "redirect:/login";
+        System.out.println(userName+" just logged out.");
+        return "redirect:/";
     }
 
     @GetMapping("/contact")
@@ -53,15 +58,20 @@ public class WebController {
         return "about";
     }
 
+    @Autowired
+    private UserDAO userDAO;
+
     @PostMapping("/login")
     public String loginSubmit(@ModelAttribute User user, HttpSession session) {
         // Should add setup conn to DB and check table. Should have DB data class, DB Service class to get.
         // Hardcode below as chatgpt says lmao.
-        if ("admin".equals(user.getuserName()) && "1234".equals(user.getpassWord())) {
+        User dbUsr = userDAO.getByUserName(user.getuserName());
+
+        if (dbUsr!=null && dbUsr.getpassWord().equals(user.getpassWord())) {
             session.setAttribute("userName", user.getuserName());
-            System.out.println("User: " + user.getuserName());
-            System.out.println("Pass: " + user.getpassWord());
-            System.out.println("Login Success!");
+            // System.out.println("User: " + user.getuserName());
+            // System.out.println("Pass: " + user.getpassWord());
+            // System.out.println("Login Success!");
             String urlString = "redirect:/dashboard/"+ user.getuserName();
             return urlString;
         } else {
@@ -76,9 +86,10 @@ public class WebController {
     public String dashboard(@PathVariable(required=false) String userName,HttpSession session, Model model) {
         String loggedInUser = (String) session.getAttribute("userName");
         System.out.println("loggedInUser: "+loggedInUser);
+
         if (loggedInUser==null || !loggedInUser.equals(userName)){
             session.invalidate();
-            return "redirect:/login?error=Invalid";
+            return "redirect:/login?unauthorized=true";
         }
 
         model.addAttribute("userName", userName);

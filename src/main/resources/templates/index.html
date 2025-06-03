@@ -7,19 +7,27 @@
 </head>
 
 <body class="all">
-    <h1 style="color: black">Hello World! Reverted</h1>
+    <div style="color: black">
+        <h1> Hello</h1>
+        <h2 th:text="${userName}">asd</h2>
+    </div>
+    
     <p style="font-family: 'Times New Roman', Times, serif;
     font-size: small;
     fill-opacity: 0.5;
     color: black;":>This page is meant to show the home page.</p>
 
     <p class="para">This is mean to show small letters</p>
-    <a th:href="@{/login}">Login</a>
+    <div>
+        <a th:if="${userName==null}"th:href="@{/login}">Login</a>
+        <a th:if="${userName!=null}"th:href="@{/logout}">Logout</a>
+    </div>
+    
 
     <div class="bottom-left">
         <a th:href="@{/about}">About</a>
         <br>
-        <a href="@{/contact}">Contact</a>
+        <a th:href="@{/contact}">Contact</a>
     </div>
     
 </body>
